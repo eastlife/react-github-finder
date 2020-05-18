@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react';
-import Navbar from './component/layout/Navbar'
+import Navbar from './component/layout/Navbar';
+import UserItem from './component/users/Useritem';
 import './App.css';
 
 // class-based component
@@ -12,6 +13,7 @@ class App extends Component {
       // has to have one parent element
       <div className='App'>
         <Navbar title="Github Finder" icon="fab fa-github"/>
+        <UserItem/>
       </div>
     );
     // An alternative of javascipt approach
