@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './component/layout/Navbar';
 import UserItem from './component/users/Useritem';
+import Users from './component/users/Users';
 import './App.css';
 
 // class-based component
@@ -11,7 +12,9 @@ class App extends Component {
       // has to have one parent element
       <div className='App'>
         <Navbar title="Github Finder" icon="fab fa-github"/>
-        <UserItem/>
+        <div className="container">
+          <Users />
+        </div>
       </div>
     );
     // An alternative of javascipt approach
