@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Navbar from './component/layout/Navbar';
-import UserItem from './component/users/Useritem';
 import Users from './component/users/Users';
 import './App.css';
 
