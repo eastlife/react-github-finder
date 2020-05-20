@@ -1,8 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'; 
 import Navbar from './component/layout/Navbar';
 import Users from './component/users/Users';
 import Search from './component/users/Search';
 import Alert from './component/layout/Alert';
+import About from './component/pages/About';
 import './App.css';
 import axios from 'axios';
 
@@ -54,19 +56,31 @@ class App extends Component {
   // life cycle method that runs at a certain point when the components are loaded
   render() {
     return (
-      // has to have one parent element
-      <div className='App'>
-        <Navbar title="Github Finder" icon="fab fa-github"/>
-        <div className="container">
-          <Alert alert={this.state.alert} />
-          <Search searchUsers={this.searchUsers} 
-                  clearUsers={this.clearUsers} 
-                  showClear={this.state.users.length > 0 ? true : false }
-                  setAlert={this.setAlert} 
-          />
-          <Users loading={this.state.loading} users={this.state.users}/>
+      <Router>
+        <div className='App'>
+          <Navbar title="Github Finder" icon="fab fa-github"/>
+          <div className="container">
+            <Alert alert={this.state.alert} />
+            <Switch>
+              <Route exact path='/' render={props => (
+                <Fragment>
+                  <Search searchUsers={this.searchUsers} 
+                          clearUsers={this.clearUsers} 
+                          showClear={this.state.users.length > 0 ? true : false }
+                          setAlert={this.setAlert} 
+                  />
+                  <Users loading={this.state.loading} users={this.state.users}/>
+                </Fragment>
+              )} />
+              <Route exact path='/about' component={About}></Route>
+
+            </Switch>
+
+          </div>
         </div>
-      </div>
+      </Router>
+      // has to have one parent element
+
     );
     // An alternative of javascipt approach
     // return React.createElement('div', { className: 'App' }, 
