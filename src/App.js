@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Navbar from './component/layout/Navbar';
 import Users from './component/users/Users';
 import Search from './component/users/Search';
+import Alert from './component/layout/Alert';
 import './App.css';
 import axios from 'axios';
 
@@ -9,7 +10,8 @@ import axios from 'axios';
 class App extends Component {
   state = {
     users: [],
-    loading: false
+    loading: false,
+    alert: null
   }
 
   // use axios to do http request
@@ -43,6 +45,12 @@ class App extends Component {
 
   // Clear users from state
   clearUsers = () => this.setState({ users: [], loading: false });
+
+  // Set Alert
+  setAlert = (msg, type) => {
+    this.setState({ alert: { msg: msg, type: type } });
+    setTimeout(() => this.setState({ alert: null}), 2000);
+  }
   // life cycle method that runs at a certain point when the components are loaded
   render() {
     return (
@@ -50,9 +58,12 @@ class App extends Component {
       <div className='App'>
         <Navbar title="Github Finder" icon="fab fa-github"/>
         <div className="container">
+          <Alert alert={this.state.alert} />
           <Search searchUsers={this.searchUsers} 
                   clearUsers={this.clearUsers} 
-                  showClear={this.state.users.length > 0 ? true : false } />
+                  showClear={this.state.users.length > 0 ? true : false }
+                  setAlert={this.setAlert} 
+          />
           <Users loading={this.state.loading} users={this.state.users}/>
         </div>
       </div>
