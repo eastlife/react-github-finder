@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'; 
 import Navbar from './component/layout/Navbar';
 import Users from './component/users/Users';
+import User from './component/users/User';
 import Search from './component/users/Search';
 import Alert from './component/layout/Alert';
 import About from './component/pages/About';
@@ -12,6 +13,7 @@ import axios from 'axios';
 class App extends Component {
   state = {
     users: [],
+    user: {},
     loading: false,
     alert: null
   }
@@ -48,6 +50,13 @@ class App extends Component {
   // Clear users from state
   clearUsers = () => this.setState({ users: [], loading: false });
 
+  // Get single Github user
+  getUser = async (username) => {
+    this.setState({ loading: true});
+    const res = await axios.get(`https://api.github.com/users/${username}`);
+    this.setState({ user: res.data, loading: false });
+  }
+
   // Set Alert
   setAlert = (msg, type) => {
     this.setState({ alert: { msg: msg, type: type } });
@@ -73,7 +82,10 @@ class App extends Component {
                 </Fragment>
               )} />
               <Route exact path='/about' component={About}></Route>
-
+              <Route exact path='/user/:login' render={props => (
+                // the spread operator {...props} means it will pass whatever the input props into the User component as its props
+                <User {...props} getUser={this.getUser} user={this.state.user} loading={this.state.loading} />
+              )} />
             </Switch>
 
           </div>
