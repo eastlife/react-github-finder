@@ -14,6 +14,7 @@ class App extends Component {
   state = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
     alert: null
   }
@@ -38,14 +39,19 @@ class App extends Component {
   // Search Github users
   searchUsers =  async (text) => {
     this.setState({ loading: true});
-    console.log(text);
     const res = await axios.get(`https://api.github.com/search/users?q=${text}&
         client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&
         client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
     console.log(res.data.items);
     this.setState({ users: res.data.items, loading: false });
-    console.log(text)
   }
+
+  // Get users repos
+  getUserRepos = async (username) => {
+    this.setState({ loading: true});
+    const res = await axios.get(`https://api.github.com/users/${username}/repos?per_page=5&sort-created:asc`);
+    this.setState({ repos: res.data, loading: false });
+  };
 
   // Clear users from state
   clearUsers = () => this.setState({ users: [], loading: false });
@@ -84,10 +90,9 @@ class App extends Component {
               <Route exact path='/about' component={About}></Route>
               <Route exact path='/user/:login' render={props => (
                 // the spread operator {...props} means it will pass whatever the input props into the User component as its props
-                <User {...props} getUser={this.getUser} user={this.state.user} loading={this.state.loading} />
+                <User {...props} getUser={this.getUser} getUserRepos={this.getUserRepos} repos={this.state.repos} user={this.state.user} loading={this.state.loading} />
               )} />
             </Switch>
-
           </div>
         </div>
       </Router>
