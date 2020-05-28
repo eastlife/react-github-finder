@@ -9,6 +9,8 @@ import About from './component/pages/About';
 import './App.css';
 import axios from 'axios';
 
+import GithubState from './context/github/GithubState';
+
 const App = () => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
@@ -65,31 +67,33 @@ const App = () => {
   }
   // life cycle method that runs at a certain point when the components are loaded
   return (
-    <Router>
-      <div className='App'>
-        <Navbar title="Github Finder" icon="fab fa-github"/>
-        <div className="container">
-          <Alert alert={alert} />
-          <Switch>
-            <Route exact path='/' render={props => (
-              <Fragment>
-                <Search searchUsers={searchUsers} 
-                        clearUsers={clearUsers} 
-                        showClear={users.length > 0 ? true : false }
-                        setAlert={showAlert} 
-                />
-                <Users loading={loading} users={users}/>
-              </Fragment>
-            )} />
-            <Route exact path='/about' component={About}></Route>
-            <Route exact path='/user/:login' render={props => (
-              // the spread operator {...props} means it will pass whatever the input props into the User component as its props
-              <User {...props} getUser={getUser} getUserRepos={getUserRepos} repos={repos} user={user} loading={loading} />
-            )} />
-          </Switch>
+    <GithubState>
+      <Router>
+        <div className='App'>
+          <Navbar title="Github Finder" icon="fab fa-github"/>
+          <div className="container">
+            <Alert alert={alert} />
+            <Switch>
+              <Route exact path='/' render={props => (
+                <Fragment>
+                  <Search searchUsers={searchUsers} 
+                          clearUsers={clearUsers} 
+                          showClear={users.length > 0 ? true : false }
+                          setAlert={showAlert} 
+                  />
+                  <Users loading={loading} users={users}/>
+                </Fragment>
+              )} />
+              <Route exact path='/about' component={About}></Route>
+              <Route exact path='/user/:login' render={props => (
+                // the spread operator {...props} means it will pass whatever the input props into the User component as its props
+                <User {...props} getUser={getUser} getUserRepos={getUserRepos} repos={repos} user={user} loading={loading} />
+              )} />
+            </Switch>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </GithubState>
   );
 }
 
