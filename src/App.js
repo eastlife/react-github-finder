@@ -13,24 +13,6 @@ import GithubState from './context/github/GithubState';
 const App = () => {
   const [alert, setAlert] = useState(null);
 
-  // async way to GET request
-  // async componentDidMount() {
-  //   this.setState({ loading: true });
-  //   const res = await axios.get(`https://api.github.com/users?
-  //       client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&
-  //       client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`);
-  //   this.setState({ users: res.data, loading: false });
-  //   console.log(res.data);
-  // }
-
-  // Search Github users
-
-
-  // Get users repos
-
-
-  // Get single Github user
-
   // Set Alert
   const showAlert = (msg, type) => {
     setAlert({ msg, type });
@@ -52,9 +34,7 @@ const App = () => {
                 </Fragment>
               )} />
               <Route exact path='/about' component={About}></Route>
-              <Route exact path='/user/:login' render={props => (
-                // the spread operator {...props} means it will pass whatever the input props into the User component as its props
-                <User {...props} component={User}/>
+              <Route exact path='/user/:login' component={User}/>
               )} />
             </Switch>
           </div>
